@@ -1,0 +1,20 @@
+name: Tag module
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v3.0.0
+        with:
+          fetch-depth: 0
+      - name: Create Tag
+        run: |
+          tag=$(cat version.txt).${{ github.run_number }}
+          git tag $tag
+          git push https://fox-md:${{ secrets.GH_TOKEN }}@github.com/$GITHUB_REPOSITORY $tag
