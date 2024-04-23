@@ -1,0 +1,41 @@
+name: Build docs
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - 'version.txt'
+      - '.gitignore'
+      - '.terraform-docs.yml'
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v3.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Calculate prev hash
+        id: prev_hash
+        run: |
+          prev_hash=$(sha256sum README.md)
+
+      - name: Render terraform docs and push changes back to PR
+        uses: terraform-docs/gh-actions@main
+        with:
+          working-dir: .
+          git-push: "true"
+
+      # - name: Calculate new hash
+      #   run: |
+      #     new_hash=$(sha256sum README.md)
+      #     if [[ $prev_hash != $new_hash ]]
+      #     then
+      #       git add README.md
+      #       git commit -m "Updated README.md"
+      #     fi
+      #     git tag $tag
+      #     git push https://fox-md:${{ secrets.GH_TOKEN }}@github.com/$GITHUB_REPOSITORY $tag
