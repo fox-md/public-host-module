@@ -9,6 +9,12 @@ on:
       - '.gitignore'
       - '.terraform-docs.yml'
 
+# on:
+#   workflow_run:
+#     workflows: [Test module]
+#     types:
+#       - completed
+
 jobs:
   tag:
     runs-on: ubuntu-latest
@@ -21,21 +27,28 @@ jobs:
       - name: Calculate prev hash
         id: prev_hash
         run: |
+          git checkout ${{ github.head_ref }}
           prev_hash=$(sha256sum README.md)
+          echo "prev_hash=$(sha256sum README.md)" >> $GITHUB_OUTPUT
 
-      - name: Render terraform docs and push changes back to PR
+      - name: Render terraform docs
         uses: terraform-docs/gh-actions@main
         with:
           working-dir: .
-          git-push: "true"
 
-      # - name: Calculate new hash
-      #   run: |
-      #     new_hash=$(sha256sum README.md)
-      #     if [[ $prev_hash != $new_hash ]]
-      #     then
-      #       git add README.md
-      #       git commit -m "Updated README.md"
-      #     fi
-      #     git tag $tag
-      #     git push https://fox-md:${{ secrets.GH_TOKEN }}@github.com/$GITHUB_REPOSITORY $tag
+      - name: Calculate new hash
+        run: |
+          new_hash=$(sha256sum README.md)
+          if [[ "${{ steps.prev_hash.outputs.prev_hash }}" != "$(sha256sum README.md)" ]]
+          then
+            sudo chown -R "${USER:-$(id -un)}" .
+            git config --global user.email "runner@github.com"
+            git config --global user.name "Runner"
+            git add README.md
+            git commit -m "Updated README.md"
+            git push
+          else
+            echo "No changes in README.md"
+          fi
+          #git tag $tag
+          #git push https://fox-md:${{ secrets.GH_TOKEN }}@github.com/$GITHUB_REPOSITORY $tag

@@ -11,7 +11,7 @@ variable "instance_type" {
 variable "ubuntu_version" {
   type        = string
   default     = "22.04"
-  description = "Ubuntu version"
+  description = "Ubuntu OS version"
 
   validation {
     condition     = contains(["22.04", "20.04"], var.ubuntu_version)
