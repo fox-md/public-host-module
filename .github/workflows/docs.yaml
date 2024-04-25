@@ -1,19 +1,19 @@
 name: Build docs
 
-on:
-  pull_request:
-    branches:
-      - master
-    paths-ignore:
-      - 'version.txt'
-      - '.gitignore'
-      - '.terraform-docs.yml'
-
 # on:
-#   workflow_run:
-#     workflows: [Test module]
-#     types:
-#       - completed
+#   pull_request:
+#     branches:
+#       - master
+#     paths-ignore:
+#       - 'version.txt'
+#       - '.gitignore'
+#       - '.terraform-docs.yml'
+
+on:
+  workflow_run:
+    workflows: [Test module]
+    types:
+      - completed
 
 jobs:
   tag:
