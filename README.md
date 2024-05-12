@@ -36,7 +36,7 @@ No modules.
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Instance type | `string` | `"t3.micro"` | no |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Name of SSH key | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | n/a | `string` | `null` | no |
-| <a name="input_ubuntu_version"></a> [ubuntu\_version](#input\_ubuntu\_version) | Ubuntu version | `string` | `"22.04"` | no |
+| <a name="input_ubuntu_version"></a> [ubuntu\_version](#input\_ubuntu\_version) | Ubuntu OS version | `string` | `"22.04"` | no |
 | <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | EBS volume size | `number` | `8` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | n/a | `string` | n/a | yes |
 
