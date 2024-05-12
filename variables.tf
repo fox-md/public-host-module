@@ -51,5 +51,5 @@ variable "create_dns_record" {
 variable "volume_size" {
   type        = number
   default     = 8
-  description = "EBS volume size"
+  description = "EBS volume size (Gb)"
 }
